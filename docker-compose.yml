@@ -1,0 +1,14 @@
+version: "3"
+services:
+  exporter:
+    build: .
+    command:
+      - --config=/etc/sidefx-lic-exporter/config.yml
+      - --log-level=DEBUG
+    restart: unless-stopped
+    ports:
+      - "9102:9102"
+    volumes:
+      - "./config.yml:/etc/sidefx-lic-exporter/config.yml"
+      - "./hfs-bin/hserver:/usr/local/bin/hserver"
+      - "./hfs-bin/sesictrl:/usr/local/bin/sesictrl"
