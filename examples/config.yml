@@ -1,0 +1,10 @@
+---
+# The interval at which the license data will be scrapped from the license
+# server
+scrape_interval: 15
+# The path to the two required binaries
+hserver_path: "/usr/local/bin/hserver"
+sesictrl_path: "/usr/local/bin/sesictrl"
+# The hostname, or IP address of your sidefx license server you want to scrape
+# license data from
+license_server_hostname: "sidefx-licserv.example.com"
