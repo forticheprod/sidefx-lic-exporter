@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "sidefx-lic-exporter"
+authors = [
+    {name = "Arthur Desplanches", email = "arthur.desplanches@forticheprod.com"},
+]
+description = "Prometheus exporter for SideFX Licence server"
+readme = "README.md"
+dependencies = [
+    "requests",
+    "prometheus_client",
+    "pyyaml",
+]
+dynamic = ["version"]
+[project.scripts]
+sidefx-lic-exporter = "sidefx_lic_exporter.main:main"
+[tool.setuptools_scm]
+
