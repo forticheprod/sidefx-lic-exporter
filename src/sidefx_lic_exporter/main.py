@@ -54,13 +54,6 @@ def get_licenses(sesictrl_path: str, license_server_hostname: str) -> dict:
                 "resolved_server":"fqdn",
                 "license_access_mode":"",
                 "start_time":"",
-                "users":[
-                    {
-                        "id":61415,
-                        "machine":"username@workstation-fqdn",
-                        "time":"YYYY/MM/DD HH:MM:SS"
-                    }
-                ]
             },
             ...
         ]
@@ -71,6 +64,7 @@ def get_licenses(sesictrl_path: str, license_server_hostname: str) -> dict:
         "print-license",
         "--format",
         "json",
+        "--brief-list",
         "-h",
         license_server_hostname,
     ]
