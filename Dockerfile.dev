@@ -1,0 +1,10 @@
+FROM python:3.10
+
+WORKDIR /app
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+RUN echo "alias sidefx-lic-exporter='python3 ./src/sidefx_lic_exporter/main.py'" >> ~/.bashrc
+
+ENTRYPOINT ["/bin/bash"]

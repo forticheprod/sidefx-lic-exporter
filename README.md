@@ -5,13 +5,29 @@ Export license usage for SideFX license server to Prometheus.
 ## Requirements
 
 To run this exporter, you need to provide the binaries `hserver` and `sesictrl`.
-They are part of the houdini install, and you can retrieve them from their
-respective destination paths after installing houdini :
+They are part of the houdini install on Linux, and you can retrieve them from
+their respective destination paths after installing houdini :
 
 - `/opt/hfs<version>/bin/hserver`
 - `/opt/hfs<version>/houdini/sbin/sesictrl`
 
+The version of houdini (which translates 1:1 with the version of these binaries)
+should be above the version of your license server. At the time of writing, the
+exporter has been tested with versions 19.5 and 20.
+
 ## Usage
+
+### Quick start from source
+
+Here is a quick way to test the application from source, it requires a docker
+engine with the docker compose plugin, and gnu make :
+
+- Retrieve the `hserver` and `sesictrl` binaries from a Houdini install on
+    Linux, and store them both in a directory named `./hfs-bin`.
+- Copy the `./example/config.yml` file to the root of the repository and adjust
+    the `license_server_hostname` entry to match your license server.
+- Start a dev build with the command `make run`.
+- The exporter should be running on your host, on the port `9102`.
 
 ### Command line parameters
 

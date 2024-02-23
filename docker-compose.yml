@@ -1,7 +1,9 @@
 version: "3"
 services:
   exporter:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     command:
       - --config=/etc/sidefx-lic-exporter/config.yml
     restart: unless-stopped
