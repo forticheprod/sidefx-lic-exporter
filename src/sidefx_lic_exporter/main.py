@@ -78,10 +78,13 @@ def get_licenses(sesictrl_path: str, license_server_hostname: str) -> dict:
     process = subprocess.run(command, capture_output=True)
     if process.returncode != 0:
         raise Exception("Failed to get licenses from sesictrl")
-    # We need to strip the first line of the output
-    # which is not valid json
-    output = process.stdout.decode("utf-8").split("\n")[1:]
-    return json.loads("\n".join(output))
+    stdout = process.stdout.decode("utf-8")
+    # sesictrl version 19.5 prints non-json output before the json output
+    # so we have to filter it out
+    if "Retrieving information about installed licenses..." in stdout:
+        stdout = stdout.split("Retrieving information about installed licenses...")[1]
+    output = json.loads(stdout)
+    return output
 
 
 def main():
