@@ -4,32 +4,31 @@ Export license usage for SideFX license server to Prometheus.
 
 ## Requirements
 
-This project is expected to run in a docker container, so one of the
-requirements is a docker engine.
+This project is expected to run in a Docker container, so you'll need a Docker
+engine.
 
 ### Binaries
 
-To run this exporter, you need to provide the binaries `hserver` and `sesictrl`.
-They are part of the houdini install on Linux, and you can retrieve them from
-their respective destination paths after installing houdini :
+To run this exporter, you need the `hserver` and `sesictrl` binaries.
+They are part of the houdini install on Linux, and can be found here :
 
 - `/opt/hfs<version>/bin/hserver`
 - `/opt/hfs<version>/houdini/sbin/sesictrl`
 
-The version of houdini (which translates 1:1 with the version of these binaries)
-should be above the version of your license server. At the time of writing, the
-exporter has been tested with versions 19.5 and 20.
+Make sure your Houdini version matches or is newer than your license server
+version. Currently, this exporter has been tested with versions 19.5 and 20.
 
-The available docker compose configuration expects these binaries to be
-installed in the `./hfs-bin/` directory, but you can change that as you see fit.
+The available Docker compose configuration expects these binaries to be
+installed in the `./hfs-bin/` directory, but you can use the directory of your
+choice.
 
 ### Configuration
 
 You will need to provide a configuration file to the exporter.
 
-The easiest way to get started is to copy the template included in the
-`examples` directory to the root of this repo, and modify the
-`license_server_hostname` to your sidefx license server hostname :
+To get started, copy the template from the `examples` directory to the root of
+this repository, and modify the `license_server_hostname` to match your SideFX
+license server:
 
 ```bash
 cp ./examples/config.yml .
@@ -40,14 +39,13 @@ sed -i 's/sidefx-licserv.example.com/<your-server-hostname>/' config.yml
 
 ### Quick start
 
-After completing the requirements, you can simply start the exporter with the
-provided docker compose configuration :
+Once you've met the requirements, start the exporter using Docker compose :
 
 ```bash
 docker compose up
 ```
 
-Or if you prefer to use vanilla docker :
+Or, if you prefer vanilla Docker :
 
 ```bash
 docker run \
@@ -64,10 +62,10 @@ The exporter will be available on port `9102`.
 
 If you want to run the application from source (e.g. to test changes) :
 
-- Follow the requirements, and make sure you have gnu make installed
-- Start the dev environment in docker with the command `make dev`
-- Inside the container, start the exporter with the command
-  `sidefx-lic-exporter` and any flags you want
+- Ensure you have the requirements installed and GNU make
+- Start the development environment in Docker with `make dev`
+- Inside the container, start the exporter with
+  `sidefx-lic-exporter` and any desired flags
 
 ```
 usage: sidefx-lic-exporter [-h] [--config CONFIG] [-l LOG_LEVEL] [-p PORT]
