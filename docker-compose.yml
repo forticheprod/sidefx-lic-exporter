@@ -1,9 +1,7 @@
 version: "3"
 services:
   exporter:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    image: ghcr.io/forticheprod/sidefx-lic-exporter:latest
     command:
       - --config=/etc/sidefx-lic-exporter/config.yml
     restart: unless-stopped
