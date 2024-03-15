@@ -19,8 +19,14 @@ Make sure your Houdini version matches or is newer than your license server
 version. Currently, this exporter has been tested with versions 19.5 and 20.
 
 The available Docker compose configuration expects these binaries to be
-installed in the `./hfs-bin/` directory, but you can use the directory of your
-choice.
+installed in the `./hfs-bin/` directory. Use this one for a quick-start.
+
+If you wish to change this path, it's something you can do in
+`docker-compose.yml` in the volumes section or an ad-hoc Docker command with the
+-v flag (see below for examples). Docker will map the path to the binaries
+inside the docker container (in `/usr/local/bin` by default), and then the
+exporter will use the `hserver_path` and the `sesictrl_path` keys in the
+`config.yml` to get their location.
 
 ### Configuration
 
