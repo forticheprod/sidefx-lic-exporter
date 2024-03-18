@@ -4,32 +4,74 @@ Export license usage for SideFX license server to Prometheus.
 
 ## Requirements
 
-To run this exporter, you need to provide the binaries `hserver` and `sesictrl`.
-They are part of the houdini install on Linux, and you can retrieve them from
-their respective destination paths after installing houdini :
+This project is expected to run in a Docker container, so you'll need a Docker
+engine.
+
+### Binaries
+
+To run this exporter, you need the `hserver` and `sesictrl` binaries.
+They are part of the houdini install on Linux, and can be found here :
 
 - `/opt/hfs<version>/bin/hserver`
 - `/opt/hfs<version>/houdini/sbin/sesictrl`
 
-The version of houdini (which translates 1:1 with the version of these binaries)
-should be above the version of your license server. At the time of writing, the
-exporter has been tested with versions 19.5 and 20.
+Make sure your Houdini version matches or is newer than your license server
+version. Currently, this exporter has been tested with versions 19.5 and 20.
+
+The available Docker compose configuration expects these binaries to be
+installed in the `./hfs-bin/` directory. Use this one for a quick-start.
+
+If you wish to change this path, it's something you can do in
+`docker-compose.yml` in the volumes section or an ad-hoc Docker command with the
+-v flag (see below for examples). Docker will map the path to the binaries
+inside the docker container (in `/usr/local/bin` by default), and then the
+exporter will use the `hserver_path` and the `sesictrl_path` keys in the
+`config.yml` to get their location.
+
+### Configuration
+
+You will need to provide a configuration file to the exporter.
+
+To get started, copy the template from the `examples` directory to the root of
+this repository, and modify the `license_server_hostname` to match your SideFX
+license server:
+
+```bash
+cp ./examples/config.yml .
+sed -i 's/sidefx-licserv.example.com/<your-server-hostname>/' config.yml
+```
 
 ## Usage
 
+### Quick start
+
+Once you've met the requirements, start the exporter using Docker compose :
+
+```bash
+docker compose up
+```
+
+Or, if you prefer vanilla Docker :
+
+```bash
+docker run \
+  -p "9102:9102" \
+  -v "./config.yml:/etc/sidefx-lic-exporter/config.yml" \
+  -v "./hfs-bin/hserver:/usr/local/bin/hserver" \
+  -v "./hfs-bin/sesictrl:/usr/local/bin/sesictrl" \
+  ghcr.io/forticheprod/sidefx-lic-exporter:latest
+```
+
+The exporter will be available on port `9102`.
+
 ### Quick start from source
 
-Here is a quick way to test the application from source, it requires a docker
-engine with the docker compose plugin, and gnu make :
+If you want to run the application from source (e.g. to test changes) :
 
-- Retrieve the `hserver` and `sesictrl` binaries from a Houdini install on
-    Linux, and store them both in a directory named `./hfs-bin`.
-- Copy the `./example/config.yml` file to the root of the repository and adjust
-    the `license_server_hostname` entry to match your license server.
-- Start a dev build with the command `make run`.
-- The exporter should be running on your host, on the port `9102`.
-
-### Command line parameters
+- Ensure you have the requirements installed and GNU make
+- Start the development environment in Docker with `make dev`
+- Inside the container, start the exporter with
+  `sidefx-lic-exporter` and any desired flags
 
 ```
 usage: sidefx-lic-exporter [-h] [--config CONFIG] [-l LOG_LEVEL] [-p PORT]
@@ -43,21 +85,4 @@ options:
                         Default : INFO
   -p PORT, --port PORT  port to run the exporter on
                         Default : 9102
-```
-
-### Configuration file
-
-A YAML configuration file is expected, with the following parameters :
-
-```yaml
----
-# The interval at which the license data will be scrapped from the license
-# server
-scrape_interval: 15
-# The path to the two required binaries
-hserver_path: "/usr/local/bin/hserver"
-sesictrl_path: "/usr/local/bin/sesictrl"
-# The hostname, or IP address of your sidefx license server you want to scrape
-# license data from
-license_server_hostname: "sidefx-licserv.example.com"
 ```
